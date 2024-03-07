@@ -1,0 +1,35 @@
+# Create the IAM role for EKS node groups
+aws iam create-role \
+  --role-name BoazEksNodeGroupRole \
+  --assume-role-policy-document '{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "ec2.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  }'
+
+# Attach AmazonEKSWorkerNodePolicy
+aws iam attach-role-policy \
+  --role-name BoazEksNodeGroupRole \
+  --policy-arn arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+
+# Attach AmazonEC2ContainerRegistryReadOnly
+aws iam attach-role-policy \
+  --role-name BoazEksNodeGroupRole \
+  --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+# Attach AmazonEKS_CNI_Policy
+aws iam attach-role-policy \
+  --role-name BoazEksNodeGroupRole \
+  --policy-arn arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+
+# Attach AmazonEMRReadOnlyAccessPolicy_v2
+aws iam attach-role-policy \
+  --role-name BoazEksNodeGroupRole \
+  --policy-arn arn:aws:iam::aws:policy/service-role/AmazonEMRReadOnlyAccessPolicy_v2
